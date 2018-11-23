@@ -1,0 +1,2 @@
+# smart-jira
+smart jira
