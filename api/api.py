@@ -10,7 +10,7 @@ import json
 import re
 import ssl
 from jira import JIRA
-from bottle import request, run, post, get, install, error
+from bottle import request, response, run, post, get, install, error
 from bottle_sqlite import SQLitePlugin
 install(SQLitePlugin(dbfile='smart_jira.db'))
 install(SessionPlugin(cookie_lifetime=None, host='127.0.0.1'))
@@ -26,32 +26,36 @@ def jira_login(db, session):
         if not username or not password:
             raise Exception('Invalid username or password')
         cookie = session.get_cookie()
-        jiras[cookie] = JIRA(options={
-            'server': 'http://127.0.0.1:8080',
+        print cookie
+        jira = JIRA(options={
+            'server': 'http://127.0.0.1:8082',
             'verify': False
         }, auth=(username, password))
-        return message(200, 'success', {
-            'token': cookie
+        return rest_message(200, 'success', {
+            'user_name': username
         })
     except Exception, e:
-        return message(401, str(e))
+        response.status = 401
+        return rest_message(401, e.message)
 
 
 @get('/jira/current_user')
 def jira_current_user(db, session):
     try:
         global jiras
+        print session.get_cookie()
         return getJira(session).current_user()
     except Exception, e:
-        return message(500, str(e))
+        response.status = 500
+        return rest_message(500, str(e))
 
 
 @error(404)
 def error404(error):
-    return message(404, 'Nothing here, sorry')
+    return rest_message(404, 'Nothing here, sorry')
 
 
-def message(code, message, data=None):
+def rest_message(code, message, data=None):
     result = {
         'code': code,
         'message': message

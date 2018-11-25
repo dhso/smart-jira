@@ -1,24 +1,26 @@
 const path = require('path')
+const appCfg = require('./app.config.json')
 
 module.exports = {
   baseUrl: '/',
   configureWebpack: {
     resolve: {
       alias: {
+        vue$: 'vue/dist/vue.esm.js',
         '@': path.join(__dirname, 'src')
       }
     }
   },
   devServer: {
-    port: 8081,
+    port: 8080,
     proxy: {
-      '/api': {
-        target: 'http://127.0.0.1:8080',
-        ws: true,
-        changeOrigin: true,
+      '/jira_api': {
+        target: appCfg.jira.host,
+        changeOrigin: false,
         pathRewrite: {
-          '^/api': '/api'
-        }
+          '^/jira_api': ''
+        },
+        secure: false
       }
     }
   }
