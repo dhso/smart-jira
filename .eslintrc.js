@@ -10,6 +10,9 @@ module.exports = {
     "no-unused-vars": [2, {
       "vars": "local",
       "args": "none"
+    }],
+    'vue/no-parsing-error': [2, {
+      'x-invalid-end-tag': false
     }]
   },
   parserOptions: {

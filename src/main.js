@@ -9,6 +9,12 @@ import 'vx-easyui/dist/themes/vue.css'
 import EasyUI from 'vx-easyui'
 Vue.use(EasyUI)
 
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+Vue.use(ElementUI, {
+  size: 'small'
+})
+
 import cookies from 'js-cookie'
 Vue.cookies = Vue.prototype.$cookies = cookies
 

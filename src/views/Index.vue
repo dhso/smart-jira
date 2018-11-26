@@ -8,7 +8,7 @@
       <div class="main-bar">
         <span class="bar-btn fa fa-bars" @click="toggle"></span>
         <div class="right-bar-btn">
-            <span class="bar-btn fa fa-sign-out" title="sign out" @click="logout"></span>
+          <span class="bar-btn fa fa-sign-out" title="sign out" @click="logout"></span>
         </div>
       </div>
     </div>
@@ -30,7 +30,6 @@
 </template>
 
 <script>
-import Jira from '@/libs/jira'
 export default {
   data() {
     return {
@@ -51,7 +50,7 @@ export default {
         {
           text: 'Issues',
           iconCls: 'fa fa-at',
-          state: "open",
+          state: 'open',
           children: [
             {
               selected: true,
@@ -61,17 +60,13 @@ export default {
           ]
         },
         {
-          text: 'Layout',
-          iconCls: 'fa fa-table',
+          text: 'Story',
+          iconCls: 'fa fa-at',
           children: [
             {
-              text: 'Panel'
-            },
-            {
-              text: 'Accordion'
-            },
-            {
-              text: 'Tabs'
+              selected: true,
+              text: 'Create Story',
+              route: 'create_story'
             }
           ]
         }
@@ -89,11 +84,11 @@ export default {
         name: item.route
       })
     },
-    logout(){
+    logout() {
       this.$messager.confirm({
-        borderType: "none",
-        title: "Confirm",
-        msg: "Are you confirm to sign out?",
+        borderType: 'none',
+        title: 'Confirm',
+        msg: 'Are you confirm to sign out?',
         result: r => {
           if (r) {
             this.$cookies.remove('user_name')
@@ -108,8 +103,7 @@ export default {
       })
     }
   },
-  async mounted() {
-  }
+  async mounted() {}
 }
 </script>
 <style lang="less">

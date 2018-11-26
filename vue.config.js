@@ -12,7 +12,7 @@ module.exports = {
     }
   },
   devServer: {
-    port: appCfg.port,
+    port: appCfg.app.port,
     proxy: {
       '/jira_api': {
         target: appCfg.jira.host,

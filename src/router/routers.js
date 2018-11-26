@@ -23,6 +23,14 @@ const indexRouter = {
         title: '项目'
       },
       component: resolve => require(['@/views/Project/ListAll.vue'], resolve)
+    },
+    {
+      path: '/create_story',
+      name: 'create_story',
+      meta: {
+        title: 'create story'
+      },
+      component: resolve => require(['@/views/Story/CreateStory.vue'], resolve)
     }
   ]
 }

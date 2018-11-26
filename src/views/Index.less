@@ -1,139 +1,135 @@
 .index {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+
+  .main-header {
+    color: #fff;
+    line-height: 50px;
+    height: 50px;
     display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
 
-    .main-header {
-        background: #3c8dbc;
+    .main-title {
+      background: #367fa9;
+      font-size: 20px;
+      text-align: center;
+      overflow: hidden;
+      display: flex;
+
+      .app-logo {
+        width: 24px;
+        height: 24px;
         color: #fff;
-        line-height: 50px;
-        height: 50px;
-        display: flex;
-
-        .main-title {
-            background: #367fa9;
-            font-size: 20px;
-            text-align: center;
-            overflow: hidden;
-            display: flex;
-
-            .app-logo {
-                width: 24px;
-                height: 24px;
-                color: #fff;
-                margin: 13px 10px;
-            }
-        }
-
-        .main-bar {
-            background: #3c8dbc;
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-items: center;
-
-            .bar-btn {
-                position: relative;
-                width: 16px;
-                height: 16px;
-                cursor: pointer;
-                margin: 0 10px;
-                color: #fff;
-            }
-
-            .right-bar-btn {
-                flex: 1;
-                display: flex;
-                flex-direction: row-reverse;
-            }
-        }
-
+        margin: 13px 10px;
+      }
     }
 
-    .main-layout {
+    .main-bar {
+      background: #3c8dbc;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-items: center;
+
+      .bar-btn {
+        position: relative;
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+        margin: 0 10px;
+        color: #fff;
+      }
+
+      .right-bar-btn {
         flex: 1;
         display: flex;
+        flex-direction: row-reverse;
+      }
+    }
+  }
 
-        .sidebar-body {
-            background: #222d32;
-        }
+  .main-layout {
+    flex: 1;
+    display: flex;
 
-        .main-body {
-            flex: 1;
-            background: #ecf0f5;
-            overflow-x: hidden;
-        }
-
+    .sidebar-body {
+      background: #222d32;
     }
 
+    .main-body {
+      flex: 1;
+      background: #ecf0f5;
+      overflow-x: hidden;
+      padding: 10px;
+    }
+  }
 }
 
-
 .sidemenu .accordion .panel-title {
-    color: #b8c7ce;
+  color: #b8c7ce;
 }
 
 .sidemenu .accordion .accordion-header {
-    background: #222d32;
-    color: #b8c7ce;
+  background: #222d32;
+  color: #b8c7ce;
 }
 
 .sidemenu .accordion .accordion-body {
-    background: #2c3b41;
-    color: #8aa4af;
+  background: #2c3b41;
+  color: #8aa4af;
 }
 
 .sidemenu .accordion .accordion-header-selected {
-    background: #1e282c;
+  background: #1e282c;
 }
 
 .sidemenu .tree-node-hover {
-    background: #2c3b41;
-    color: #fff;
+  background: #2c3b41;
+  color: #fff;
 }
 
 .sidemenu .tree-node-selected {
-    background: #2c3b41;
-    color: #fff;
+  background: #2c3b41;
+  color: #fff;
 }
 
 .sidemenu .accordion-header .panel-tool {
-    display: none;
+  display: none;
 }
 
 .sidemenu .accordion-header::after,
 .sidemenu .tree-node-nonleaf::after {
-    display: inline-block;
-    vertical-align: top;
-    border-style: solid;
-    transform: rotate(45deg);
-    width: 4px;
-    height: 4px;
-    content: '';
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    margin-top: -3px;
-    border-width: 0 1px 1px 0;
+  display: inline-block;
+  vertical-align: top;
+  border-style: solid;
+  transform: rotate(45deg);
+  width: 4px;
+  height: 4px;
+  content: '';
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  margin-top: -3px;
+  border-width: 0 1px 1px 0;
 }
 
 .sidemenu .accordion-header-selected::after {
-    transform: rotate(-135deg);
+  transform: rotate(-135deg);
 }
 
 .sidemenu .tree-node-nonleaf::after {
-    transform: rotate(-135deg);
+  transform: rotate(-135deg);
 }
 
 .sidemenu .tree-node-nonleaf-collapsed::after {
-    transform: rotate(45deg);
+  transform: rotate(45deg);
 }
 
 .sidemenu-collapsed .accordion-header::after {
-    display: none;
+  display: none;
 }
 
 .sidemenu-tooltip .accordion {
-    border-color: #1e282c;
+  border-color: #1e282c;
 }
