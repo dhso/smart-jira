@@ -82,12 +82,8 @@ export default {
               })
             }
           } catch (err) {
-            this.user.password = null
-            this.$refs.password.blur()
             this.errors.password.push('password is not correct')
-            setTimeout(() => {
-              this.$refs.password.focus()
-            }, 200)
+            this.$refs.password.focus()
           } finally {
             this.isLogining = false
           }

@@ -1,21 +1,11 @@
 <template>
   <div class="project_list_all">
-    <DataList
-      :data="projects"
-      selectionMode="single"
-      @selectionChange="selection=$event"
-    >
-      <template slot-scope="scope">
-        <div class="product f-row">
-          <img :src="getImage(scope.row)">
-          <div class="detail">
-            <p>{{scope.row.id}} - {{scope.row.name}}</p>
-            <p>{{scope.row.key}}</p>
-            <p>{{scope.row.projectTypeKey}}</p>
-          </div>
-        </div>
-      </template>
-    </DataList>
+    <DataGrid :data="projects">
+      <GridColumn field="id" title="Project ID"></GridColumn>
+      <GridColumn field="name" title="Project Name"></GridColumn>
+      <GridColumn field="key" title="Project Key"></GridColumn>
+      <GridColumn field="projectTypeKey" title="Project TypeKey"></GridColumn>
+    </DataGrid>
   </div>
 </template>
 
@@ -26,7 +16,7 @@ export default {
   data() {
     return {
       selection: null,
-      projects: null
+      projects: []
     }
   },
   methods: {
@@ -47,3 +37,7 @@ export default {
   }
 }
 </script>
+
+<style lang="less">
+@import './ListAll.less';
+</style>

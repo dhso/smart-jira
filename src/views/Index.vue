@@ -1,30 +1,29 @@
 <template>
   <div class="index">
-    <div class="f-column">
-      <div class="main-header f-row">
-        <div class="f-row f-full">
-          <div class="main-title f-animate f-row" :style="{width:width+'px'}">
-            <img class="app-logo" src="../assets/jira.png">
-            <span v-if="!collapsed">{{title}}</span>
-          </div>
-          <div class="main-bar f-full">
-            <span class="main-toggle fa fa-bars" @click="toggle()"></span>
-          </div>
+    <div class="main-header">
+      <div class="main-title f-animate" :style="{width:width+'px'}">
+        <img class="app-logo" src="../assets/jira.png">
+        <span v-if="!collapsed">{{title}}</span>
+      </div>
+      <div class="main-bar">
+        <span class="bar-btn fa fa-bars" @click="toggle"></span>
+        <div class="right-bar-btn">
+            <span class="bar-btn fa fa-sign-out" title="sign out" @click="logout"></span>
         </div>
       </div>
-      <div class="f-row f-full">
-        <div class="sidebar-body f-animate" :style="{width:width+'px'}">
-          <SideMenu
-            :data="menus"
-            :border="false"
-            :collapsed="collapsed"
-            :multiple="false"
-            @itemClick="onItemClick($event)"
-          ></SideMenu>
-        </div>
-        <div class="main-body f-full">
-          <router-view></router-view>
-        </div>
+    </div>
+    <div class="main-layout">
+      <div class="sidebar-body f-animate" :style="{width:width+'px'}">
+        <SideMenu
+          :data="menus"
+          :border="false"
+          :collapsed="collapsed"
+          :multiple="false"
+          @itemClick="onItemClick($event)"
+        ></SideMenu>
+      </div>
+      <div class="main-body">
+        <router-view></router-view>
       </div>
     </div>
   </div>
@@ -42,41 +41,22 @@ export default {
         {
           text: 'Projects',
           iconCls: 'fa fa-wpforms',
-          state: 'open',
           children: [
             {
               text: 'List All',
               route: 'project_list_all'
-            },
-            {
-              text: 'Wizard'
-            },
-            {
-              text: 'File Upload'
             }
           ]
         },
         {
-          text: 'Mail',
+          text: 'Issues',
           iconCls: 'fa fa-at',
-          selected: true,
+          state: "open",
           children: [
             {
-              text: 'Inbox'
-            },
-            {
-              text: 'Sent'
-            },
-            {
-              text: 'Trash',
-              children: [
-                {
-                  text: 'Item1'
-                },
-                {
-                  text: 'Item2'
-                }
-              ]
+              selected: true,
+              text: 'My Issues',
+              route: 'my_issues'
             }
           ]
         },
@@ -108,15 +88,27 @@ export default {
       this.$router.push({
         name: item.route
       })
+    },
+    logout(){
+      this.$messager.confirm({
+        borderType: "none",
+        title: "Confirm",
+        msg: "Are you confirm to sign out?",
+        result: r => {
+          if (r) {
+            this.$cookies.remove('user_name')
+            this.$router.push({
+              name: 'login',
+              query: {
+                logout: 'true'
+              }
+            })
+          }
+        }
+      })
     }
   },
   async mounted() {
-    try {
-      let res = await Jira.http.get(`jira_api/${Jira.apis.issue('PROJ-1')}`)
-      console.log(res)
-    } catch (err) {
-      console.log(err)
-    }
   }
 }
 </script>

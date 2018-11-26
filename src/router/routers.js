@@ -3,18 +3,18 @@ import Index from '@/views/Index.vue'
 const indexRouter = {
   path: '/',
   component: Index,
-  redirect: '/index',
+  redirect: '/my_issues',
   meta: {
     title: ''
   },
   children: [
     {
-      path: '/index',
-      name: 'index',
+      path: '/my_issues',
+      name: 'my_issues',
       meta: {
-        title: '首页'
+        title: 'my issues'
       },
-      component: resolve => require(['@/views/Home.vue'], resolve)
+      component: resolve => require(['@/views/Issue/MyIssues.vue'], resolve)
     },
     {
       path: '/project_list_all',
