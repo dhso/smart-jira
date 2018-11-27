@@ -116,16 +116,18 @@ export default {
       this.$confirm('Are you confirm to sign out?', 'Confirm', {
         confirmButtonText: 'Sign Out',
         cancelButtonText: 'Cancel'
-      }).then(() => {
-        this.$cookies.remove('user_name')
-        this.$storejs.clearAll()
-        this.$router.push({
-          name: 'login',
-          query: {
-            logout: 'true'
-          }
-        })
       })
+        .then(() => {
+          this.$cookies.remove('user_name')
+          this.$storejs.clearAll()
+          this.$router.push({
+            name: 'login',
+            query: {
+              logout: 'true'
+            }
+          })
+        })
+        .catch(() => {})
     }
   },
   async mounted() {}

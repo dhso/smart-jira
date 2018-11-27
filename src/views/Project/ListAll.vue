@@ -19,14 +19,7 @@ export default {
       projects: []
     }
   },
-  methods: {
-    getImage(row) {
-      return `${Jira.host}\\${row.avatarUrls['48x48']
-        .split('/')
-        .slice(3)
-        .join('/')}`
-    }
-  },
+  methods: {},
   async mounted() {
     try {
       let res = await Jira.http.get(`jira_api/${Jira.apis.projects()}`)
