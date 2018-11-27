@@ -10,9 +10,9 @@
     display: flex;
     order: 0;
     z-index: 2;
-    box-shadow: 0 0 11px rgba(0,0,0,0.13);
+    box-shadow: 0 0 11px rgba(0, 0, 0, 0.13);
     .main-title {
-      background: #404E67;
+      background: #404e67;
       font-size: 20px;
       text-align: center;
       overflow: hidden;
@@ -38,16 +38,19 @@
         cursor: pointer;
         padding: 7px;
         margin: 10px;
-        color: #404E67;
+        color: #404e67;
       }
 
       .right-bar-btn {
         flex: 1;
         display: flex;
         flex-direction: row-reverse;
-        .user-avatar{
+        .user-avatar {
           border-radius: 2px;
           margin-right: 5px;
+          width: 24px;
+          height: 24px;
+          vertical-align: middle;
         }
       }
     }
@@ -58,7 +61,7 @@
     display: flex;
 
     .sidebar-body {
-      background: #404E67;
+      background: #404e67;
       padding: 5px;
     }
 
@@ -69,11 +72,10 @@
       padding: 10px;
     }
   }
-
 }
-.header-dropdown-panel{
+.header-dropdown-panel {
   width: 150px;
-  .el-dropdown-menu__item i{
+  .el-dropdown-menu__item i {
     margin-right: 10px;
   }
 }
@@ -83,47 +85,46 @@
 }
 
 .sidemenu .accordion .accordion-header {
-  background: #404E67;
+  background: #404e67;
   color: #dcdcdc;
   padding: 8px 15px;
 }
 
 .sidemenu .accordion .accordion-body {
-  background: #404E67;
+  background: #404e67;
   color: #dcdcdc;
-  border-color: #404E67;
+  border-color: #404e67;
 }
 
 .sidemenu .accordion .accordion-header-selected {
-  background: #404E67;
+  background: #404e67;
 }
 
 .sidemenu .tree-node-hover {
-  background: #404E67;
+  background: #404e67;
   color: #fff;
   cursor: pointer;
 }
 
 .sidemenu .tree-node-selected {
-  background: #404E67;
+  background: #404e67;
   color: #39c;
-  border-left:none;
+  border-left: none;
   position: relative;
 }
-.sidemenu .tree-node-selected::before{
+.sidemenu .tree-node-selected::before {
   content: '';
   position: absolute;
   width: 3px;
-  top:8px;
+  top: 8px;
   bottom: 8px;
   background: #39c;
 }
 
-
 .sidemenu .accordion-header .panel-tool {
   display: none;
 }
-.sidemenu .tree{
+.sidemenu .tree {
   overflow: hidden;
 }
 .sidemenu .accordion-header::after,
@@ -160,11 +161,11 @@
 .sidemenu-tooltip .accordion {
   border-color: #1e282c;
   border: none;
-  .panel-title{
+  .panel-title {
     line-height: 1.5;
-    border-bottom: 1px solid rgba(0,0,0,0.25);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
   }
 }
-.sidemenu .tree-file{
+.sidemenu .tree-file {
   background: none;
 }

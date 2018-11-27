@@ -35,6 +35,9 @@
           </el-form-item>
         </el-col>
       </el-row>
+      <el-form-item label="Time To Test" prop="timeToTest">
+        <el-date-picker v-model="story.timeToTest" type="date"></el-date-picker>
+      </el-form-item>
       <el-form-item label="Description" prop="description">
         <el-input type="textarea" :rows="5" v-model="story.description"></el-input>
       </el-form-item>
@@ -73,20 +76,25 @@ export default {
   data() {
     return {
       story: {
+        summary: null,
+        type: null,
+        spring: null,
+        fixVersion: null,
+        timeToTest: null,
+        description: null,
         team: []
       },
       rules: {
         summary: [
           { required: true, message: '请输入summary', trigger: 'blur' }
         ],
-        type: [
-          { required: true, message: '请选择type', trigger: 'change' }
-        ],
-        spring: [
-          { required: true, message: '请填写spring', trigger: 'blur' }
-        ],
+        type: [{ required: true, message: '请选择type', trigger: 'change' }],
+        spring: [{ required: true, message: '请填写spring', trigger: 'blur' }],
         fixVersion: [
           { required: true, message: '请填写fixVersion', trigger: 'blur' }
+        ],
+        timeToTest: [
+          { required: true, message: '请选择date', trigger: 'change' }
         ],
         description: [
           { required: true, message: '请填写description', trigger: 'blur' }

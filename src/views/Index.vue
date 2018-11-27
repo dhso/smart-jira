@@ -9,16 +9,19 @@
         <span class="bar-btn fa fa-bars" @click="toggle"></span>
         <div class="right-bar-btn">
           <el-dropdown>
-              <span class="bar-btn">
-                <img class="user-avatar" :src="getUser().avatarUrls['16x16']" />
-                  {{getUser().displayName}}<i class="fa fa-caret-down ml10"></i>
-              </span>
-              <el-dropdown-menu class="header-dropdown-panel" slot="dropdown">
-                <el-dropdown-item>
-                    <span title="sign out" @click="logout"><i class="fa fa-sign-out"></i>Sign Out</span>
-                  </el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
+            <span class="bar-btn">
+              <img class="user-avatar" :src="getUserAvatar()">
+              {{userInfo.displayName}}
+              <i class="fa fa-caret-down ml10"></i>
+            </span>
+            <el-dropdown-menu class="header-dropdown-panel" slot="dropdown">
+              <el-dropdown-item>
+                <span title="sign out" @click="logout">
+                  <i class="fa fa-sign-out"></i>Sign Out
+                </span>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </div>
       </div>
     </div>
@@ -47,6 +50,7 @@ export default {
       title: 'Smart JIRA',
       width: 200,
       collapsed: false,
+      userInfo: this.$storejs.get('user_info'),
       menus: [
         {
           text: 'Projects',
@@ -75,7 +79,8 @@ export default {
             {
               text: 'Create Story',
               route: 'create_story'
-            },{
+            },
+            {
               text: 'Bulk Update',
               route: 'bulk_update'
             }
@@ -95,8 +100,8 @@ export default {
     }
   },
   methods: {
-    getUser(){
-       return this.$storejs.get('user_info')
+    getUserAvatar() {
+      return Jira.fixHost(this.userInfo.avatarUrls['24x24'])
     },
     toggle() {
       this.collapsed = !this.collapsed
@@ -123,14 +128,7 @@ export default {
       })
     }
   },
-  async mounted() {
-    try {
-      // let res = await Jira.http.get(`jira_api/${Jira.apis.myself()}`)
-      // this.$storejs.set('user_info',res.data)
-    } catch (err) {
-      console.log(err)
-    }
-  }
+  async mounted() {}
 }
 </script>
 <style lang="less">

@@ -46,9 +46,17 @@ Jira.apis = {
   search_issues: issue => {
     return `rest/api/2/search`
   },
-  myself:()=>{
+  myself: () => {
     return `rest/api/2/myself`
   }
+}
+
+Jira.fixHost = url => {
+  let removeHostUrl = url
+    .split('/')
+    .slice(3)
+    .join('/')
+  return `${Jira.host}/${removeHostUrl}`
 }
 
 export default Jira
