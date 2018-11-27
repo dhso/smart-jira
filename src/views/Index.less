@@ -3,15 +3,16 @@
   flex-direction: column;
   width: 100%;
   height: 100%;
-
   .main-header {
     color: #fff;
     line-height: 50px;
     height: 50px;
     display: flex;
-
+    order: 0;
+    z-index: 2;
+    box-shadow: 0 0 11px rgba(0,0,0,0.13);
     .main-title {
-      background: #367fa9;
+      background: #404E67;
       font-size: 20px;
       text-align: center;
       overflow: hidden;
@@ -21,12 +22,12 @@
         width: 24px;
         height: 24px;
         color: #fff;
-        margin: 13px 10px;
+        margin: 13px;
       }
     }
 
     .main-bar {
-      background: #3c8dbc;
+      background: #fff;
       flex: 1;
       display: flex;
       align-items: center;
@@ -34,17 +35,20 @@
 
       .bar-btn {
         position: relative;
-        width: 16px;
-        height: 16px;
         cursor: pointer;
-        margin: 0 10px;
-        color: #fff;
+        padding: 7px;
+        margin: 10px;
+        color: #404E67;
       }
 
       .right-bar-btn {
         flex: 1;
         display: flex;
         flex-direction: row-reverse;
+        .user-avatar{
+          border-radius: 2px;
+          margin-right: 5px;
+        }
       }
     }
   }
@@ -54,7 +58,8 @@
     display: flex;
 
     .sidebar-body {
-      background: #222d32;
+      background: #404E67;
+      padding: 5px;
     }
 
     .main-body {
@@ -64,40 +69,63 @@
       padding: 10px;
     }
   }
+
+}
+.header-dropdown-panel{
+  width: 150px;
+  .el-dropdown-menu__item i{
+    margin-right: 10px;
+  }
 }
 
 .sidemenu .accordion .panel-title {
-  color: #b8c7ce;
+  color: #dcdcdc;
 }
 
 .sidemenu .accordion .accordion-header {
-  background: #222d32;
-  color: #b8c7ce;
+  background: #404E67;
+  color: #dcdcdc;
+  padding: 8px 15px;
 }
 
 .sidemenu .accordion .accordion-body {
-  background: #2c3b41;
-  color: #8aa4af;
+  background: #404E67;
+  color: #dcdcdc;
+  border-color: #404E67;
 }
 
 .sidemenu .accordion .accordion-header-selected {
-  background: #1e282c;
+  background: #404E67;
 }
 
 .sidemenu .tree-node-hover {
-  background: #2c3b41;
+  background: #404E67;
   color: #fff;
+  cursor: pointer;
 }
 
 .sidemenu .tree-node-selected {
-  background: #2c3b41;
-  color: #fff;
+  background: #404E67;
+  color: #39c;
+  border-left:none;
+  position: relative;
 }
+.sidemenu .tree-node-selected::before{
+  content: '';
+  position: absolute;
+  width: 3px;
+  top:8px;
+  bottom: 8px;
+  background: #39c;
+}
+
 
 .sidemenu .accordion-header .panel-tool {
   display: none;
 }
-
+.sidemenu .tree{
+  overflow: hidden;
+}
 .sidemenu .accordion-header::after,
 .sidemenu .tree-node-nonleaf::after {
   display: inline-block;
@@ -129,7 +157,14 @@
 .sidemenu-collapsed .accordion-header::after {
   display: none;
 }
-
 .sidemenu-tooltip .accordion {
   border-color: #1e282c;
+  border: none;
+  .panel-title{
+    line-height: 1.5;
+    border-bottom: 1px solid rgba(0,0,0,0.25);
+  }
+}
+.sidemenu .tree-file{
+  background: none;
 }

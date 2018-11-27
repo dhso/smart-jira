@@ -79,15 +79,17 @@ export default {
         summary: [
           { required: true, message: '请输入summary', trigger: 'blur' }
         ],
-        type: [{ required: true, message: '请选择type', trigger: 'change' }],
+        type: [
+          { required: true, message: '请选择type', trigger: 'change' }
+        ],
         spring: [
-          { required: true, message: '请填写活动形式', trigger: 'blur' }
+          { required: true, message: '请填写spring', trigger: 'blur' }
         ],
         fixVersion: [
-          { required: true, message: '请填写活动形式', trigger: 'blur' }
+          { required: true, message: '请填写fixVersion', trigger: 'blur' }
         ],
         description: [
-          { required: true, message: '请填写活动形式', trigger: 'blur' }
+          { required: true, message: '请填写description', trigger: 'blur' }
         ],
         team: [
           {

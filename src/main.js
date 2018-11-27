@@ -18,6 +18,9 @@ Vue.use(ElementUI, {
 import cookies from 'js-cookie'
 Vue.cookies = Vue.prototype.$cookies = cookies
 
+import storejs from 'store'
+Vue.storejs = Vue.prototype.$storejs = storejs
+
 import axios from 'axios'
 Vue.http = Vue.prototype.$http = axios.create({
   timeout: 30000,

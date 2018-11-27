@@ -3,7 +3,7 @@
     <Form ref="form" class="login-box" :model="user" :rules="rules" @validate="errors=$event">
       <div class="login-title">Sign up</div>
       <div class="login-text">
-        <p>Welcome to use smart jira.</p>
+        <p>Welcome to smart jira.</p>
       </div>
       <div class="mb20">
         <TextBox
@@ -68,17 +68,19 @@ export default {
         ) {
           try {
             this.isLogining = true
-            let res = await Jira.http.post(
+            let loginData = await Jira.http.post(
               `jira_api/${Jira.apis.authentication()}`,
               {
                 username: this.user.username,
                 password: this.user.password
               }
             )
-            if (res.status === 200) {
+            if (loginData.status === 200) {
+              let userInfoData = await Jira.http.get(`jira_api/${Jira.apis.myself()}`)
+              this.$storejs.set('user_info',userInfoData.data)
               this.$cookies.set('user_name', this.user.username)
               this.$router.push({
-                name: 'index'
+                path: '/'
               })
             }
           } catch (err) {

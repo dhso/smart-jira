@@ -45,6 +45,9 @@ Jira.apis = {
   },
   search_issues: issue => {
     return `rest/api/2/search`
+  },
+  myself:()=>{
+    return `rest/api/2/myself`
   }
 }
 

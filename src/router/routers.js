@@ -31,6 +31,22 @@ const indexRouter = {
         title: 'create story'
       },
       component: resolve => require(['@/views/Story/CreateStory.vue'], resolve)
+    },
+    {
+      path: '/spring_board',
+      name: 'spring_board',
+      meta: {
+        title: 'spring board'
+      },
+      component: resolve => require(['@/views/Board/SpringBoard.vue'], resolve)
+    },
+    {
+      path: '/bulk_update',
+      name: 'bulk_update',
+      meta: {
+        title: 'bulk update'
+      },
+      component: resolve => require(['@/views/Story/BulkUpdate.vue'], resolve)
     }
   ]
 }

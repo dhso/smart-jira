@@ -8,7 +8,17 @@
       <div class="main-bar">
         <span class="bar-btn fa fa-bars" @click="toggle"></span>
         <div class="right-bar-btn">
-          <span class="bar-btn fa fa-sign-out" title="sign out" @click="logout"></span>
+          <el-dropdown>
+              <span class="bar-btn">
+                <img class="user-avatar" :src="getUser().avatarUrls['16x16']" />
+                  {{getUser().displayName}}<i class="fa fa-caret-down ml10"></i>
+              </span>
+              <el-dropdown-menu class="header-dropdown-panel" slot="dropdown">
+                <el-dropdown-item>
+                    <span title="sign out" @click="logout"><i class="fa fa-sign-out"></i>Sign Out</span>
+                  </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
         </div>
       </div>
     </div>
@@ -30,6 +40,7 @@
 </template>
 
 <script>
+import Jira from '@/libs/jira'
 export default {
   data() {
     return {
@@ -39,7 +50,7 @@ export default {
       menus: [
         {
           text: 'Projects',
-          iconCls: 'fa fa-wpforms',
+          iconCls: 'fa fa-archive',
           children: [
             {
               text: 'List All',
@@ -49,24 +60,34 @@ export default {
         },
         {
           text: 'Issues',
-          iconCls: 'fa fa-at',
-          state: 'open',
+          iconCls: 'fa fa-bug',
           children: [
             {
-              selected: true,
               text: 'My Issues',
               route: 'my_issues'
             }
           ]
         },
         {
-          text: 'Story',
-          iconCls: 'fa fa-at',
+          text: 'Stories',
+          iconCls: 'fa fa-sitemap',
           children: [
             {
-              selected: true,
               text: 'Create Story',
               route: 'create_story'
+            },{
+              text: 'Bulk Update',
+              route: 'bulk_update'
+            }
+          ]
+        },
+        {
+          text: 'Boards',
+          iconCls: 'fa fa-window-maximize',
+          children: [
+            {
+              text: 'Spring Board',
+              route: 'spring_board'
             }
           ]
         }
@@ -74,36 +95,42 @@ export default {
     }
   },
   methods: {
+    getUser(){
+       return this.$storejs.get('user_info')
+    },
     toggle() {
       this.collapsed = !this.collapsed
       this.width = this.collapsed ? 50 : 200
     },
     onItemClick(item) {
-      console.log(item)
       this.$router.push({
         name: item.route
       })
     },
     logout() {
-      this.$messager.confirm({
-        borderType: 'none',
-        title: 'Confirm',
-        msg: 'Are you confirm to sign out?',
-        result: r => {
-          if (r) {
-            this.$cookies.remove('user_name')
-            this.$router.push({
-              name: 'login',
-              query: {
-                logout: 'true'
-              }
-            })
+      this.$confirm('Are you confirm to sign out?', 'Confirm', {
+        confirmButtonText: 'Sign Out',
+        cancelButtonText: 'Cancel'
+      }).then(() => {
+        this.$cookies.remove('user_name')
+        this.$storejs.clearAll()
+        this.$router.push({
+          name: 'login',
+          query: {
+            logout: 'true'
           }
-        }
+        })
       })
     }
   },
-  async mounted() {}
+  async mounted() {
+    try {
+      // let res = await Jira.http.get(`jira_api/${Jira.apis.myself()}`)
+      // this.$storejs.set('user_info',res.data)
+    } catch (err) {
+      console.log(err)
+    }
+  }
 }
 </script>
 <style lang="less">
