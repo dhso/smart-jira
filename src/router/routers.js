@@ -12,7 +12,7 @@ const indexRouter = {
       path: '/my_issues',
       name: 'my_issues',
       meta: {
-        title: 'my issues'
+        title: 'Smart JIRA - My Issues'
       },
       component: resolve => require(['@/views/Issue/MyIssues.vue'], resolve)
     },
@@ -20,7 +20,7 @@ const indexRouter = {
       path: '/project_list_all',
       name: 'project_list_all',
       meta: {
-        title: '项目'
+        title: 'Smart JIRA - Project List'
       },
       component: resolve => require(['@/views/Project/ListAll.vue'], resolve)
     },
@@ -28,7 +28,7 @@ const indexRouter = {
       path: '/create_story',
       name: 'create_story',
       meta: {
-        title: 'create story'
+        title: 'Smart JIRA - Create Story'
       },
       component: resolve => require(['@/views/Story/CreateStory.vue'], resolve)
     },
@@ -36,7 +36,7 @@ const indexRouter = {
       path: '/spring_board',
       name: 'spring_board',
       meta: {
-        title: 'spring board'
+        title: 'Smart JIRA - Spring Board'
       },
       component: resolve => require(['@/views/Board/SpringBoard.vue'], resolve)
     },
@@ -44,7 +44,7 @@ const indexRouter = {
       path: '/bulk_update',
       name: 'bulk_update',
       meta: {
-        title: 'bulk update'
+        title: 'Smart JIRA - Bulk Update'
       },
       component: resolve => require(['@/views/Story/BulkUpdate.vue'], resolve)
     }
@@ -55,7 +55,7 @@ const loginRouter = {
   path: '/login',
   name: 'login',
   meta: {
-    title: '登录'
+    title: 'Smart JIRA - Login'
   },
   component: resolve => require(['@/views/Login.vue'], resolve)
 }

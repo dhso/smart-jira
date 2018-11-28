@@ -1,10 +1,7 @@
 <template>
   <div class="login">
     <Form ref="form" class="login-box" :model="user" :rules="rules" @validate="errors=$event">
-      <div class="login-title">Sign up</div>
-      <div class="login-text">
-        <p>Welcome to smart jira.</p>
-      </div>
+      <div class="login-title">Sign In</div>
       <div class="mb20">
         <TextBox
           name="username"
@@ -27,7 +24,7 @@
         ></PasswordBox>
         <div class="input-error">{{getError('password')}}</div>
       </div>
-      <LinkButton btnCls="login-btn" :disabled="isLogining" @click="handleLogin">Sign me up!</LinkButton>
+      <el-button type="primary" class="login-btn" :disabled="isLogining" @click="handleLogin">Sign In</el-button>
     </Form>
   </div>
 </template>

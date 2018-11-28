@@ -86,24 +86,24 @@ export default {
       },
       rules: {
         summary: [
-          { required: true, message: '请输入summary', trigger: 'blur' }
+          { required: true, message: 'Please input summary', trigger: 'blur' }
         ],
-        type: [{ required: true, message: '请选择type', trigger: 'change' }],
-        spring: [{ required: true, message: '请填写spring', trigger: 'blur' }],
+        type: [{ required: true, message: 'Please select type', trigger: 'change' }],
+        spring: [{ required: true, message: 'Please input spring', trigger: 'blur' }],
         fixVersion: [
-          { required: true, message: '请填写fixVersion', trigger: 'blur' }
+          { required: true, message: 'Please input fix version', trigger: 'blur' }
         ],
         timeToTest: [
-          { required: true, message: '请选择date', trigger: 'change' }
+          { required: true, message: 'Please select date', trigger: 'change' }
         ],
         description: [
-          { required: true, message: '请填写description', trigger: 'blur' }
+          { required: true, message: 'Please input description', trigger: 'blur' }
         ],
         team: [
           {
             type: 'array',
             required: true,
-            message: '请至少选择一个team',
+            message: 'Please choose at least one team',
             trigger: 'change'
           }
         ]

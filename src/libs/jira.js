@@ -52,8 +52,11 @@ Jira.apis = {
 }
 
 Jira.fixHost = url => {
-  let removeHostUrl = url
-    .split('/')
+  let urlSplit = url.split('/')
+  if ( urlSplit.slice(2,3).join() === 'www.gravatar.com') {
+    return url
+  }
+  let removeHostUrl = urlSplit
     .slice(3)
     .join('/')
   return `${Jira.host}/${removeHostUrl}`

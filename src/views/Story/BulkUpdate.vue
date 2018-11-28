@@ -57,18 +57,18 @@ export default {
       },
       rules: {
         tickets: [
-          { required: true, message: '请输入tickets', trigger: 'blur' }
+          { required: true, message: 'Please input tickets', trigger: 'blur' }
         ],
         ticketType: [
-          { required: true, message: '请选择ticketType', trigger: 'change' }
+          { required: true, message: 'Please select ticket type', trigger: 'change' }
         ],
         fixVersion: [
-          { required: true, message: '请填写fixVersion', trigger: 'blur' }
+          { required: true, message: 'Please input fix version', trigger: 'blur' }
         ],
-        sprint: [{ required: true, message: '请填写sprint', trigger: 'blur' }],
-        epic: [{ required: true, message: '请填写epic', trigger: 'blur' }],
+        sprint: [{ required: true, message: 'Please input sprint', trigger: 'blur' }],
+        epic: [{ required: true, message: 'Please input epic', trigger: 'blur' }],
         timeToTest: [
-          { required: true, message: '请选择date', trigger: 'change' }
+          { required: true, message: 'Please select date', trigger: 'change' }
         ]
       }
     }
