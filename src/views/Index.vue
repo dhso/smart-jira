@@ -28,7 +28,7 @@
     <div class="main-layout">
       <div class="sidebar-body f-animate" :style="{width:width+'px'}">
         <SideMenu
-          :data="menus"
+          :data="sideMenus"
           :border="false"
           :collapsed="collapsed"
           :multiple="false"
@@ -99,6 +99,19 @@ export default {
       ]
     }
   },
+  computed: {
+      sideMenus: function() {
+        for( let menu of this.menus ){
+          for( let menu_children of menu.children ){
+            if( menu_children.route === this.$route.name ){
+              menu.state = "open"
+              break
+            }
+          }
+        }
+        return this.menus
+      }
+  },
   methods: {
     getUserAvatar() {
       return Jira.fixHost(this.userInfo.avatarUrls['24x24'])
@@ -106,6 +119,7 @@ export default {
     toggle() {
       this.collapsed = !this.collapsed
       this.width = this.collapsed ? 50 : 200
+      this.$storejs.set('ui_sidemenu_collapsed', this.collapsed)
     },
     onItemClick(item) {
       this.$router.push({
@@ -130,7 +144,28 @@ export default {
         .catch(() => {})
     }
   },
-  async mounted() {}
+  async mounted() {
+    setTimeout(()=>{
+      // init sidemenu and collapse status
+      let menuElements = document.querySelectorAll('.sidemenu .accordion .panel .accordion-body .tree .tree-title')
+      for( let menuElement of menuElements){
+        if( menuElement.innerText === this.$route.meta.name ){
+          let _parentNode = menuElement.parentNode
+          if (_parentNode.fireEvent){
+            _parentNode.fireEvent('click');
+          }
+          else{
+              let htmlEvents = document.createEvent("HTMLEvents");  
+              htmlEvents.initEvent("click", false, true);  
+              _parentNode.dispatchEvent(htmlEvents);  
+          }
+          break
+        }
+      }
+      this.collapsed = this.$storejs.get('ui_sidemenu_collapsed') || false
+      this.width = this.collapsed ? 50 : 200
+    },200)
+  }
 }
 </script>
 <style lang="less">

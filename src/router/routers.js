@@ -12,7 +12,8 @@ const indexRouter = {
       path: '/my_issues',
       name: 'my_issues',
       meta: {
-        title: 'Smart JIRA - My Issues'
+        title: 'Smart JIRA - My Issues',
+        name: 'My Issues'
       },
       component: resolve => require(['@/views/Issue/MyIssues.vue'], resolve)
     },
@@ -20,7 +21,8 @@ const indexRouter = {
       path: '/project_list_all',
       name: 'project_list_all',
       meta: {
-        title: 'Smart JIRA - Project List'
+        title: 'Smart JIRA - Project List',
+        name: 'Project List'
       },
       component: resolve => require(['@/views/Project/ListAll.vue'], resolve)
     },
@@ -28,7 +30,8 @@ const indexRouter = {
       path: '/create_story',
       name: 'create_story',
       meta: {
-        title: 'Smart JIRA - Create Story'
+        title: 'Smart JIRA - Create Story',
+        name: 'Create Story'
       },
       component: resolve => require(['@/views/Story/CreateStory.vue'], resolve)
     },
@@ -36,7 +39,8 @@ const indexRouter = {
       path: '/spring_board',
       name: 'spring_board',
       meta: {
-        title: 'Smart JIRA - Spring Board'
+        title: 'Smart JIRA - Spring Board',
+        name: 'Spring Board'
       },
       component: resolve => require(['@/views/Board/SpringBoard.vue'], resolve)
     },
@@ -44,7 +48,8 @@ const indexRouter = {
       path: '/bulk_update',
       name: 'bulk_update',
       meta: {
-        title: 'Smart JIRA - Bulk Update'
+        title: 'Smart JIRA - Bulk Update',
+        name: 'Bulk Update'
       },
       component: resolve => require(['@/views/Story/BulkUpdate.vue'], resolve)
     }
