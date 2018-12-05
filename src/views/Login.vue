@@ -15,16 +15,21 @@
       </div>
       <div class="mb20">
         <PasswordBox
-          ref="password"
-          name="password"
-          v-model="user.password"
+          ref="token"
+          name="token"
+          v-model="user.token"
           cls="w100"
-          placeholder="Password"
+          placeholder="Token"
           @keyup.enter.native="handleLogin"
         ></PasswordBox>
-        <div class="input-error">{{getError('password')}}</div>
+        <div class="input-error">{{getError('token')}}</div>
       </div>
-      <el-button type="primary" class="login-btn" :disabled="isLogining" @click="handleLogin">Sign In</el-button>
+      <el-button
+        type="primary"
+        class="login-btn"
+        :disabled="isLogining"
+        @click="handleLogin"
+      >Sign In</el-button>
     </Form>
   </div>
 </template>
@@ -38,11 +43,11 @@ export default {
       isLogining: false,
       user: {
         username: null,
-        password: null
+        token: null
       },
       rules: {
         username: ['required'],
-        password: ['required']
+        token: ['required']
       },
       errors: {}
     }
@@ -68,21 +73,23 @@ export default {
             let loginData = await Jira.http.post(
               `jira_api/${Jira.apis.authentication()}`,
               {
-                username: this.user.username,
-                password: this.user.password
+                user_name: this.user.username,
+                token: this.user.token
               }
             )
             if (loginData.status === 200) {
-              let userInfoData = await Jira.http.get(`jira_api/${Jira.apis.myself()}`)
-              this.$storejs.set('user_info',userInfoData.data)
+              // let userInfoData = await Jira.http.get(
+              //   `jira_api/${Jira.apis.myself()}`
+              // )
+              this.$storejs.set('user_name', this.user.username)
               this.$cookies.set('user_name', this.user.username)
               this.$router.push({
                 path: '/'
               })
             }
           } catch (err) {
-            this.errors.password.push('password is not correct')
-            this.$refs.password.focus()
+            this.errors.token.push('token is not correct')
+            this.$refs.token.focus()
           } finally {
             this.isLogining = false
           }

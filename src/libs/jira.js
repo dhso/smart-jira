@@ -7,10 +7,9 @@ const Jira = {}
 Jira.host = appCfg.jira.host
 
 Jira.http = axios.create({
-  timeout: 30000,
+  timeout: 60000,
   headers: {
-    'Content-Type': 'application/json;charset=UTF-8',
-    'X-Atlassian-Token': 'no-check'
+    'Content-Type': 'application/json;charset=UTF-8'
   }
 })
 Jira.http.interceptors.response.use(
@@ -35,30 +34,43 @@ Jira.http.interceptors.response.use(
 
 Jira.apis = {
   authentication: () => {
-    return 'rest/auth/1/session'
+    return 'login'
   },
-  projects: () => {
-    return `rest/api/2/project`
+  story_types: () => {
+    return `basic/data/story/type`
   },
-  issue: issue => {
-    return `rest/api/2/issue/${issue}`
+  teams: issue => {
+    return `basic/data/teams`
   },
-  search_issues: issue => {
-    return `rest/api/2/search`
+  fix_versions: storyType => {
+    return `basic/data/fixversion/storytype/${storyType}`
   },
-  myself: () => {
-    return `rest/api/2/myself`
+  team_members: storyType => {
+    return `basic/data/user/storytype/${storyType}`
+  },
+  sprints: () => {
+    return `basic/data/sprint/toc/core`
+  },
+  create_issue: () => {
+    return `jira/issue`
+  },
+  sprint_board: () => {
+    return `jira/story/report`
+  },
+  sprint_bug_summary: sprintId => {
+    return `jira/report/bug/summary/sprintid/${sprintId}`
+  },
+  story_status_update: (boardId, sprintId) => {
+    return `jira/story/update/${boardId}/${sprintId}`
   }
 }
 
 Jira.fixHost = url => {
   let urlSplit = url.split('/')
-  if ( urlSplit.slice(2,3).join() === 'www.gravatar.com') {
+  if (urlSplit.slice(2, 3).join() === 'www.gravatar.com') {
     return url
   }
-  let removeHostUrl = urlSplit
-    .slice(3)
-    .join('/')
+  let removeHostUrl = urlSplit.slice(3).join('/')
   return `${Jira.host}/${removeHostUrl}`
 }
 

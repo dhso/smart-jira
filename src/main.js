@@ -1,3 +1,4 @@
+import 'promise.prototype.finally'
 import Vue from 'vue'
 
 import VueEvents from 'vue-events'

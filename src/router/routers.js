@@ -3,29 +3,11 @@ import Index from '@/views/Index.vue'
 const indexRouter = {
   path: '/',
   component: Index,
-  redirect: '/my_issues',
+  redirect: '/create_story',
   meta: {
     title: ''
   },
   children: [
-    {
-      path: '/my_issues',
-      name: 'my_issues',
-      meta: {
-        title: 'Smart JIRA - My Issues',
-        name: 'My Issues'
-      },
-      component: resolve => require(['@/views/Issue/MyIssues.vue'], resolve)
-    },
-    {
-      path: '/project_list_all',
-      name: 'project_list_all',
-      meta: {
-        title: 'Smart JIRA - Project List',
-        name: 'Project List'
-      },
-      component: resolve => require(['@/views/Project/ListAll.vue'], resolve)
-    },
     {
       path: '/create_story',
       name: 'create_story',
@@ -36,13 +18,23 @@ const indexRouter = {
       component: resolve => require(['@/views/Story/CreateStory.vue'], resolve)
     },
     {
-      path: '/spring_board',
-      name: 'spring_board',
+      path: '/sprint_board',
+      name: 'sprint_board',
       meta: {
         title: 'Smart JIRA - Spring Board',
-        name: 'Spring Board'
+        name: 'Sprint Board'
       },
-      component: resolve => require(['@/views/Board/SpringBoard.vue'], resolve)
+      component: resolve => require(['@/views/Board/SprintBoard.vue'], resolve)
+    },
+    {
+      path: '/sprint_bug_summary',
+      name: 'sprint_bug_summary',
+      meta: {
+        title: 'Smart JIRA - Spring Bug Summary',
+        name: 'Sprint Bug Summary'
+      },
+      component: resolve =>
+        require(['@/views/Board/SprintBugSummary.vue'], resolve)
     },
     {
       path: '/bulk_update',

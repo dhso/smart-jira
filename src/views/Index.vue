@@ -10,8 +10,8 @@
         <div class="right-bar-btn">
           <el-dropdown>
             <span class="bar-btn">
-              <img class="user-avatar" :src="getUserAvatar()">
-              {{userInfo.displayName}}
+              <!-- <img class="user-avatar" :src="getUserAvatar()"> -->
+              {{userName}}
               <i class="fa fa-caret-down ml10"></i>
             </span>
             <el-dropdown-menu class="header-dropdown-panel" slot="dropdown">
@@ -50,28 +50,8 @@ export default {
       title: 'Smart JIRA',
       width: 200,
       collapsed: false,
-      userInfo: this.$storejs.get('user_info'),
+      userName: this.$storejs.get('user_name'),
       menus: [
-        {
-          text: 'Projects',
-          iconCls: 'fa fa-archive',
-          children: [
-            {
-              text: 'List All',
-              route: 'project_list_all'
-            }
-          ]
-        },
-        {
-          text: 'Issues',
-          iconCls: 'fa fa-bug',
-          children: [
-            {
-              text: 'My Issues',
-              route: 'my_issues'
-            }
-          ]
-        },
         {
           text: 'Stories',
           iconCls: 'fa fa-sitemap',
@@ -91,8 +71,12 @@ export default {
           iconCls: 'fa fa-window-maximize',
           children: [
             {
-              text: 'Spring Board',
-              route: 'spring_board'
+              text: 'Sprint Board',
+              route: 'sprint_board'
+            },
+            {
+              text: 'Sprint Bug Summary',
+              route: 'sprint_bug_summary'
             }
           ]
         }
@@ -100,17 +84,17 @@ export default {
     }
   },
   computed: {
-      sideMenus: function() {
-        for( let menu of this.menus ){
-          for( let menu_children of menu.children ){
-            if( menu_children.route === this.$route.name ){
-              menu.state = "open"
-              break
-            }
+    sideMenus: function() {
+      for (let menu of this.menus) {
+        for (let menu_children of menu.children) {
+          if (menu_children.route === this.$route.name) {
+            menu.state = 'open'
+            break
           }
         }
-        return this.menus
       }
+      return this.menus
+    }
   },
   methods: {
     getUserAvatar() {
@@ -145,26 +129,27 @@ export default {
     }
   },
   async mounted() {
-    setTimeout(()=>{
+    setTimeout(() => {
       // init sidemenu and collapse status
-      let menuElements = document.querySelectorAll('.sidemenu .accordion .panel .accordion-body .tree .tree-title')
-      for( let menuElement of menuElements){
-        if( menuElement.innerText === this.$route.meta.name ){
+      let menuElements = document.querySelectorAll(
+        '.sidemenu .accordion .panel .accordion-body .tree .tree-title'
+      )
+      for (let menuElement of menuElements) {
+        if (menuElement.innerText === this.$route.meta.name) {
           let _parentNode = menuElement.parentNode
-          if (_parentNode.fireEvent){
-            _parentNode.fireEvent('click');
-          }
-          else{
-              let htmlEvents = document.createEvent("HTMLEvents");  
-              htmlEvents.initEvent("click", false, true);  
-              _parentNode.dispatchEvent(htmlEvents);  
+          if (_parentNode.fireEvent) {
+            _parentNode.fireEvent('click')
+          } else {
+            let htmlEvents = document.createEvent('HTMLEvents')
+            htmlEvents.initEvent('click', false, true)
+            _parentNode.dispatchEvent(htmlEvents)
           }
           break
         }
       }
       this.collapsed = this.$storejs.get('ui_sidemenu_collapsed') || false
       this.width = this.collapsed ? 50 : 200
-    },200)
+    }, 200)
   }
 }
 </script>

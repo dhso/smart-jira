@@ -16,11 +16,14 @@ module.exports = {
     proxy: {
       '/jira_api': {
         target: appCfg.jira.host,
-        changeOrigin: false,
+        changeOrigin: true,
         pathRewrite: {
           '^/jira_api': ''
         },
-        secure: false
+        secure: false,
+        cookiePathRewrite: {
+          '/jira-bot': '/'
+        }
       }
     }
   }
