@@ -24,7 +24,7 @@
       <el-row :gutter="100">
         <el-col :span="12">
           <el-form-item label="Sprint" prop="sprint">
-            <el-select v-model="story.sprint" filterable class="w300">
+            <el-select v-model="story.sprint" filterable class="w300" :loading="sprintsLoading">
               <el-option v-for="(val, key) in sprints" :key="val" :label="key" :value="val"></el-option>
             </el-select>
           </el-form-item>
@@ -44,6 +44,7 @@
           </el-form-item>
         </el-col>
       </el-row>
+
       <el-form-item label="Time To Test" prop="timeToTest">
         <el-date-picker
           v-model="story.timeToTest"
@@ -139,10 +140,12 @@ export default {
       storyTypes: [],
       teams: [],
       sprints: {},
+      sprintsLoading: false,
       fixVersions: {},
       teamMembers: [],
       submiting: false,
       story: {
+        board: null,
         summary: null,
         story_type: null,
         sprint: null,
@@ -165,6 +168,9 @@ export default {
             message: 'Please select story type',
             trigger: 'change'
           }
+        ],
+        board: [
+          { required: true, message: 'Please input board', trigger: 'blur' }
         ],
         sprint: [
           { required: true, message: 'Please input sprint', trigger: 'blur' }
@@ -239,7 +245,7 @@ export default {
     storyTypeChangeHandler(val) {
       this.fetchStoryTypeRelation(val)
     },
-    fetchStoryTypeRelation(storyType) {
+    resetData() {
       this.fixVersions = {}
       this.story.fix_version = null
       this.teamMembers = []
@@ -249,6 +255,9 @@ export default {
       this.story.ux = null
       this.story.tech = null
       this.story.qa = null
+    },
+    fetchStoryTypeRelation(storyType) {
+      this.resetData()
       switch (storyType) {
         case 'TECH_EPIC':
           this.story.teams = []
@@ -264,23 +273,48 @@ export default {
         .then(fixVersionsRes => {
           this.fixVersions = fixVersionsRes.data.results
         })
+        .catch(err => {
+          this.$message.error(err.message)
+        })
       Jira.http
         .get(`jira_api/${Jira.apis.team_members(storyType)}`)
         .then(teamMembersRes => {
           this.teamMembers = teamMembersRes.data.results
         })
+        .catch(err => {
+          this.$message.error(err.message)
+        })
     }
   },
   mounted() {
-    Jira.http.get(`jira_api/${Jira.apis.story_types()}`).then(storyTypeRes => {
-      this.storyTypes = storyTypeRes.data.results
-    })
-    Jira.http.get(`jira_api/${Jira.apis.teams()}`).then(teamsRes => {
-      this.teams = teamsRes.data.results
-    })
-    Jira.http.get(`jira_api/${Jira.apis.sprints()}`).then(sprintsRes => {
-      this.sprints = sprintsRes.data.results
-    })
+    this.sprintsLoading = true
+    Jira.http
+      .get(`jira_api/${Jira.apis.sprints(223, 0)}`)
+      .then(sprintsRes => {
+        this.sprints = sprintsRes.data.results
+      })
+      .catch(err => {
+        this.$message.error(err.message)
+      })
+      .finally(() => {
+        this.sprintsLoading = false
+      })
+    Jira.http
+      .get(`jira_api/${Jira.apis.story_types()}`)
+      .then(storyTypeRes => {
+        this.storyTypes = storyTypeRes.data.results
+      })
+      .catch(err => {
+        this.$message.error(err.message)
+      })
+    Jira.http
+      .get(`jira_api/${Jira.apis.teams()}`)
+      .then(teamsRes => {
+        this.teams = teamsRes.data.results
+      })
+      .catch(err => {
+        this.$message.error(err.message)
+      })
   }
 }
 </script>

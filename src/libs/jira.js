@@ -26,11 +26,36 @@ Jira.http.interceptors.response.use(
         }
       })
 
-      throw Error('授权失败，请重新登录')
+      throw Error('Current session has expired, please re-login.')
     }
     return Promise.reject(error)
   }
 )
+Jira.timeStrForamtSeconds = timeStr => {
+  // 1d = 8h = 28800
+  let secondsDict = {
+    s: 1,
+    m: 60,
+    h: 3600,
+    d: 28800
+  }
+  let seconds =
+    timeStr.substr(0, timeStr.length - 1) *
+    secondsDict[timeStr.substr(timeStr.length - 1)]
+  return seconds
+}
+Jira.timeStrForamtDay = timeStr => {
+  if (!timeStr) {
+    return ''
+  }
+  let timeArr = timeStr.split(' ')
+  let seconds = 0
+  for (let time of timeArr) {
+    seconds += Jira.timeStrForamtSeconds(time)
+  }
+  // 1d = 8h = 28800
+  return `${Math.round((seconds / 28800) * 100) / 100}d`
+}
 
 Jira.apis = {
   authentication: () => {
@@ -48,8 +73,11 @@ Jira.apis = {
   team_members: storyType => {
     return `basic/data/user/storytype/${storyType}`
   },
-  sprints: () => {
-    return `basic/data/sprint/toc/core`
+  boards: () => {
+    return `basic/data/sprint/toc/board`
+  },
+  sprints: (boardId, isIncludeClosed = 1) => {
+    return `basic/data/sprint/board/${boardId}/${isIncludeClosed}`
   },
   create_issue: () => {
     return `jira/issue`
@@ -57,11 +85,17 @@ Jira.apis = {
   sprint_board: () => {
     return `jira/story/report`
   },
+  sprint_board_fetch_issues_by_ids: issueIds => {
+    return `jira/issue/ids/${issueIds}`
+  },
   sprint_bug_summary: sprintId => {
     return `jira/report/bug/summary/sprintid/${sprintId}`
   },
   story_status_update: (boardId, sprintId) => {
     return `jira/story/update/${boardId}/${sprintId}`
+  },
+  board_sprint_summary: (boardId, sprintId) => {
+    return `jira/report/sprint/summary/board/${boardId}/sprint/${sprintId}?boardId=${boardId}&sprintId=${sprintId}`
   }
 }
 

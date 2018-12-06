@@ -75,8 +75,8 @@ export default {
               route: 'sprint_board'
             },
             {
-              text: 'Sprint Bug Summary',
-              route: 'sprint_bug_summary'
+              text: 'Sprint Summary',
+              route: 'sprint_summary'
             }
           ]
         }

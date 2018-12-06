@@ -21,20 +21,20 @@ const indexRouter = {
       path: '/sprint_board',
       name: 'sprint_board',
       meta: {
-        title: 'Smart JIRA - Spring Board',
+        title: 'Smart JIRA - Sprint Board',
         name: 'Sprint Board'
       },
       component: resolve => require(['@/views/Board/SprintBoard.vue'], resolve)
     },
     {
-      path: '/sprint_bug_summary',
-      name: 'sprint_bug_summary',
+      path: '/sprint_summary',
+      name: 'sprint_summary',
       meta: {
-        title: 'Smart JIRA - Spring Bug Summary',
-        name: 'Sprint Bug Summary'
+        title: 'Smart JIRA - Sprint Summary',
+        name: 'Sprint Summary'
       },
       component: resolve =>
-        require(['@/views/Board/SprintBugSummary.vue'], resolve)
+        require(['@/views/Board/SprintSummary.vue'], resolve)
     },
     {
       path: '/bulk_update',

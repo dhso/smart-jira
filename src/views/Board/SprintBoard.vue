@@ -1,16 +1,30 @@
 <template>
   <div class="sprint_board">
     <div class="header-title">
-      <span>Sprint</span>
+      <span>Sprint Board</span>
       <el-select
         class="sprint-select"
         v-model="selectdSprint"
         @change="changeSprintHandler"
         :loading="sprintLoading"
+        filterable
         size="mini"
         placeholder="Please select sprint"
+        :disabled="treeGridLoading"
       >
         <el-option v-for="(val, key) in sprints" :key="val" :label="key" :value="val"></el-option>
+      </el-select>
+      <el-select
+        class="board-select"
+        v-model="selectdBoard"
+        @change="changeBoardHandler"
+        :loading="boardLoading"
+        filterable
+        size="mini"
+        placeholder="Please select board"
+        :disabled="treeGridLoading"
+      >
+        <el-option v-for="(val, key) in boards" :key="val" :label="key" :value="val"></el-option>
       </el-select>
     </div>
     <el-form class="sprint-board-buttons">
@@ -23,37 +37,87 @@
         :data="sprintBoard"
         idField="id"
         treeField="id"
-        :loading="treeGridLoading"
         class="sprit-board-tree-grid"
+        v-loading="treeGridLoading"
+        @rowExpand="onNodeExpand($event)"
       >
         <GridColumn field="id" title width="30">
           <template slot="cell" slot-scope="scope">{{scope.none}}</template>
         </GridColumn>
-        <GridColumn field="business_value" title="P" width="40" :sortable="true">
-          <template
-            slot="cell"
-            slot-scope="scope"
-          >{{scope.row.business_value?parseFloat(scope.row.business_value):''}}</template>
+        <GridColumn field="issue_key" title="Key" width="80">
+          <template slot="cell" slot-scope="scope">
+            <a
+              :href="'https://patsnap.atlassian.net/browse/'+scope.row.issue_key"
+              target="_blank"
+            >{{scope.row.issue_key}}</a>
+          </template>
         </GridColumn>
-        <GridColumn field="issue_key" title="Key" width="80"></GridColumn>
-        <GridColumn field="summary" title="Summary" width="200"></GridColumn>
-        <GridColumn field="assignee_display_name" title="Assignee" width="80"></GridColumn>
-        <GridColumn field="status" title="Status" width="100"></GridColumn>
-        <GridColumn field="time_track" title="Estimated" width="70" align="center"></GridColumn>
-        <GridColumn field="logged_track" title="Logged Work" width="90" align="center"></GridColumn>
+        <GridColumn field="summary" title="Summary" width="300">
+          <template slot="cell" slot-scope="scope">
+            <el-popover width="300" :content="scope.row.summary" trigger="hover" placement="right">
+              <span class="ellipsis-1 summary-cell" slot="reference">{{scope.row.summary}}</span>
+            </el-popover>
+          </template>
+        </GridColumn>
+        <GridColumn field="assignee_display_name" title="Assignee" width="120" align="center"></GridColumn>
+        <GridColumn field="status" title="Status" width="100">
+          <template slot="cell" slot-scope="scope">
+            <el-tag
+              class="status-tag"
+              type="success"
+              v-if="scope.row.status==='Done'"
+            >{{scope.row.status}}</el-tag>
+            <el-tag
+              class="status-tag"
+              type="warning"
+              v-else-if="scope.row.status==='In Progress'"
+            >{{scope.row.status}}</el-tag>
+            <el-tag
+              class="status-tag"
+              type="danger"
+              v-else-if="scope.row.status==='Open'"
+            >{{scope.row.status}}</el-tag>
+            <el-tag class="status-tag" v-else>{{scope.row.status}}</el-tag>
+          </template>
+        </GridColumn>
+        <GridColumn field="time_track" title="Estimated" width="70" align="center">
+          <template slot="cell" slot-scope="scope">
+            <span>{{strToDay(scope.row.time_track)}}</span>
+          </template>
+        </GridColumn>
+        <GridColumn field="logged_track" title="Logged Work" width="90" align="center">
+          <template slot="cell" slot-scope="scope">
+            <span>{{strToDay(scope.row.logged_track)}}</span>
+          </template>
+        </GridColumn>
         <GridColumn field="time_to_test" title="Time to Test" width="100"></GridColumn>
-        <GridColumn field="released" title="Released" width="120"></GridColumn>
+        <GridColumn field="fix_version" title="Fix Version" width="120">
+          <template slot="cell" slot-scope="scope">
+            <el-popover
+              width="200"
+              :content="calcFixVersion(scope.row.fix_version)"
+              trigger="hover"
+              placement="left"
+            >
+              <span
+                class="ellipsis-1 summary-cell"
+                slot="reference"
+              >{{calcFixVersion(scope.row.fix_version)}}</span>
+            </el-popover>
+          </template>
+        </GridColumn>
       </TreeGrid>
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page.sync="currentPage"
-        :page-sizes="[5, 10, 20, 50]"
+        :page-sizes="[5, 10, 20]"
         :page-size.sync="currentSize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="totalCount"
         :background="true"
         class="sprit-board-tree-pagination"
+        :disabled="treeGridLoading"
       ></el-pagination>
     </el-form>
   </div>
@@ -66,6 +130,9 @@ export default {
   name: 'create_story',
   data() {
     return {
+      boards: {},
+      selectdBoard: null,
+      boardLoading: false,
       sprints: [],
       selectdSprint: null,
       sprintLoading: false,
@@ -73,25 +140,49 @@ export default {
       totalCount: null,
       treeGridLoading: false,
       currentPage: 1,
-      currentSize: 10,
-      options: [
-        {
-          value: '1',
-          label: 'CORE-823'
-        },
-        {
-          value: '2',
-          label: 'WEB-823'
-        }
-      ],
-      value: '1'
+      currentSize: 20
     }
   },
   methods: {
-    changeSprintHandler(val) {
-      this.fetchSpringBoard(223, val)
+    calcFixVersion(fixVersion) {
+      if (!fixVersion) return ''
+      let fixVersions = []
+      for (let item of fixVersion) {
+        fixVersions.push(item.name)
+      }
+      return fixVersions.join()
     },
-    fetchSpringBoard(boardId, sprintId) {
+    strToDay(str) {
+      return Jira.timeStrForamtDay(str)
+    },
+    changeBoardHandler(val) {
+      this.sprintBoard = []
+      this.currentPage = 1
+      this.totalCount = null
+      this.fetchSprints(val)
+    },
+    async fetchSprints(boardId) {
+      try {
+        this.sprintLoading = true
+        this.selectdSprint = null
+        this.sprints = {}
+        let sprintsRes = await Jira.http.get(
+          `jira_api/${Jira.apis.sprints(boardId)}`
+        )
+        this.sprints = sprintsRes.data.results
+      } catch (err) {
+        this.$message.error(err.message)
+      } finally {
+        this.sprintLoading = false
+      }
+    },
+    changeSprintHandler(val) {
+      this.sprintBoard = []
+      this.currentPage = 1
+      this.totalCount = null
+      this.fetchSprintBoard(this.selectdBoard, val)
+    },
+    fetchSprintBoard(boardId, sprintId) {
       this.sprintBoard = []
       this.treeGridLoading = true
       Jira.http
@@ -99,21 +190,46 @@ export default {
           board_id: boardId,
           sprint_id: sprintId,
           page: this.currentPage,
-          rows: this.currentSize
+          rows: this.currentSize,
+          is_include_children: false
         })
         .then(sprintBoardRes => {
           this.sprintBoard = sprintBoardRes.data.results.story_report_list
           this.totalCount = sprintBoardRes.data.results.total
+        })
+        .catch(err => {
+          this.$message.error(err.message)
+        })
+        .finally(() => {
+          this.treeGridLoading = false
+        })
+    },
+    fetchSprintBoardLazyByIds(node) {
+      this.treeGridLoading = true
+      console.log(node)
+      let linkedStoryIds = node.linked_stories.join(',')
+      Jira.http
+        .get(
+          `jira_api/${Jira.apis.sprint_board_fetch_issues_by_ids(
+            linkedStoryIds
+          )}`
+        )
+        .then(issuesRes => {
+          let issuesData = issuesRes.data.results
+          this.$set(node, 'children', issuesData)
+        })
+        .catch(err => {
+          this.$message.error(err.message)
         })
         .finally(() => {
           this.treeGridLoading = false
         })
     },
     handleSizeChange(val) {
-      this.fetchSpringBoard(223, this.selectdSprint)
+      this.fetchSprintBoard(this.selectdBoard, this.selectdSprint)
     },
     handleCurrentChange(val) {
-      this.fetchSpringBoard(223, this.selectdSprint)
+      this.fetchSprintBoard(this.selectdBoard, this.selectdSprint)
     },
     statusUpdate() {
       Jira.http
@@ -127,26 +243,24 @@ export default {
         .catch(err => {
           this.$message.error(err.message)
         })
+    },
+    onNodeExpand(event) {
+      console.log(event)
+      let node = event
+      if (!node.children) {
+        this.fetchSprintBoardLazyByIds(node)
+      }
     }
   },
   async mounted() {
     try {
-      this.sprintLoading = true
-      let sprintsRes = await Jira.http.get(`jira_api/${Jira.apis.sprints()}`)
-      this.sprints = sprintsRes.data.results
-      // setTimeout(() => {
-      //   this.selectdSprint =
-      //     Object.values(this.sprints).length > 0
-      //       ? Object.values(this.sprints)[0]
-      //       : null
-      //   if (this.selectdSprint) {
-      //     this.fetchSpringBoard(223, this.selectdSprint)
-      //   }
-      // }, 50)
+      this.boardLoading = true
+      let boardsRes = await Jira.http.get(`jira_api/${Jira.apis.boards()}`)
+      this.boards = boardsRes.data.results
     } catch (err) {
-      console.log(err)
+      this.$message.error(err.message)
     } finally {
-      this.sprintLoading = false
+      this.boardLoading = false
     }
   }
 }

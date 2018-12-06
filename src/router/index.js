@@ -27,11 +27,18 @@ router.beforeEach((to, from, next) => {
     })
   }
   store.dispatch('app/update_app_title', to.meta.title)
-  store.commit('app/update_app_loading', { state: 'start' })
+  store.commit('app/update_app_loading', {
+    state: 'start'
+  })
   next()
 })
 
 router.afterEach(to => {
-  store.commit('app/update_app_loading', { state: 'finish' })
+  store.commit('app/update_app_loading', {
+    state: 'finish'
+  })
   window.scrollTo(0, 0)
+  if (document.querySelector('.main-body')) {
+    document.querySelector('.main-body').scrollTo(0, 0)
+  }
 })
