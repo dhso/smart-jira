@@ -44,6 +44,16 @@
         <GridColumn field="id" title width="30">
           <template slot="cell" slot-scope="scope">{{scope.none}}</template>
         </GridColumn>
+        <GridColumn field="this_issue_type" title="T" width="60">
+          <template slot="cell" slot-scope="scope">
+            <el-tag
+              class="issue-type-tag"
+              type="success"
+              v-if="scope.row.this_issue_type==='Story'"
+            >Story</el-tag>
+            <el-tag class="issue-type-tag" type="warning" v-else>Task</el-tag>
+          </template>
+        </GridColumn>
         <GridColumn field="issue_key" title="Key" width="80">
           <template slot="cell" slot-scope="scope">
             <a

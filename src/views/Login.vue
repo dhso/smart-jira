@@ -42,8 +42,8 @@ export default {
     return {
       isLogining: false,
       user: {
-        username: null,
-        token: null
+        username: 'zhouzhixiang@patsnap.com',
+        token: 'S2PAg6if8FuaF5INDogo671D'
       },
       rules: {
         username: ['required'],

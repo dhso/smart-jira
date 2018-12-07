@@ -64,6 +64,12 @@ Jira.apis = {
   story_types: () => {
     return `basic/data/story/type`
   },
+  ticket_types: () => {
+    return `basic/data/ticket/type`
+  },
+  board_epic: boardId => {
+    return `jira/board/${boardId}/epic`
+  },
   teams: issue => {
     return `basic/data/teams`
   },
@@ -96,6 +102,9 @@ Jira.apis = {
   },
   board_sprint_summary: (boardId, sprintId) => {
     return `jira/report/sprint/summary/board/${boardId}/sprint/${sprintId}?boardId=${boardId}&sprintId=${sprintId}`
+  },
+  bulk_update: () => {
+    return `jira/bulk/update`
   }
 }
 

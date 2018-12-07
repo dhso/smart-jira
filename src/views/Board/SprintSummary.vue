@@ -123,7 +123,7 @@
           <el-card class="box-card">
             <div slot="header" class="clearfix">
               <span>
-                <i class="fa fa-list"></i> Stories
+                <i class="fa fa-list"></i> Feature Stories
                 <span
                   class="small-number"
                   v-if="stories['Feature'].length>0"

@@ -45,12 +45,12 @@
         </el-col>
       </el-row>
 
-      <el-form-item label="Time To Test" prop="timeToTest">
+      <el-form-item label="Time To Test" prop="time_to_test">
         <el-date-picker
-          v-model="story.timeToTest"
+          v-model="story.time_to_test"
           type="datetime"
           format="yyyy-MM-dd HH:mm"
-          value-format="yyyy-MM-ddTHH:mm:00.000+0800"
+          value-format="yyyy-MM-ddTHH:mm:00.000ZZ"
         ></el-date-picker>
       </el-form-item>
       <el-form-item label="Description" prop="description">
@@ -145,12 +145,11 @@ export default {
       teamMembers: [],
       submiting: false,
       story: {
-        board: null,
         summary: null,
         story_type: null,
         sprint: null,
         fix_version: null,
-        timeToTest: null,
+        time_to_test: null,
         description: null,
         teams: [],
         pm: null,
@@ -169,9 +168,6 @@ export default {
             trigger: 'change'
           }
         ],
-        board: [
-          { required: true, message: 'Please input board', trigger: 'blur' }
-        ],
         sprint: [
           { required: true, message: 'Please input sprint', trigger: 'blur' }
         ],
@@ -182,7 +178,7 @@ export default {
             trigger: 'blur'
           }
         ],
-        timeToTest: [
+        time_to_test: [
           { required: true, message: 'Please select date', trigger: 'change' }
         ],
         description: [
@@ -219,7 +215,7 @@ export default {
                 html += `<p>${key}: ${issueInfo[key]}</p>`
               }
               this.$notify.success({
-                title: 'Create Info',
+                title: 'Success Create Info',
                 dangerouslyUseHTMLString: true,
                 message: html
               })
