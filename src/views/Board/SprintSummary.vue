@@ -15,42 +15,15 @@
         >
           <el-option v-for="(val, key) in sprints" :key="val" :label="key" :value="val"></el-option>
         </el-select>
-        <el-select
-          class="board-select"
-          v-model="selectdBoard"
-          @change="changeBoardHandler"
-          :loading="boardLoading"
-          filterable
-          size="mini"
-          placeholder="Please select board"
-          :disabled="tableLoading"
-        >
-          <el-option v-for="(val, key) in boards" :key="val" :label="key" :value="val"></el-option>
-        </el-select>
       </div>
       <div class="clear-both"></div>
       <el-row :gutter="20" class="mb20">
         <el-col :span="24">
           <el-card class="box-card">
             <div slot="header" class="clearfix">
-              <span><i class="fa fa-bug"></i> Bug Summary</span>
-            </div>
-            <el-table :data="bugSummary" stripe class="w100" v-loading="tableLoading">
-              <el-table-column prop="team" label="Team"></el-table-column>
-              <el-table-column prop="total" label="Total"></el-table-column>
-              <el-table-column prop="dev" label="Dev"></el-table-column>
-              <el-table-column prop="prod" label="Prod"></el-table-column>
-              <el-table-column prop="fixed" label="Fix of Total"></el-table-column>
-              <el-table-column prop="opening" label="Open of Total"></el-table-column>
-            </el-table>
-          </el-card>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20" class="mb20">
-        <el-col :span="24">
-          <el-card class="box-card">
-            <div slot="header" class="clearfix">
-              <span><i class="fa fa-table"></i> Sprint Report</span>
+              <span>
+                <i class="fa fa-table"></i> Sprint Report
+              </span>
             </div>
             <div
               class="el-table w100 el-table--fit el-table--border el-table--striped el-table--enable-row-hover el-table--small"
@@ -61,7 +34,7 @@
                   cellpadding="0"
                   border="0"
                   class="el-table__body w100 customer-table-center"
-                  v-loading="boardSprintSummaryTableLoading"
+                  v-loading="tableLoading"
                 >
                   <thead>
                     <tr>
@@ -87,13 +60,13 @@
                   <tr class="table-gray-font">
                     <td class="cell">Feature</td>
                     <td>Tech</td>
-                    <td>Tech without testing</td>
+                    <td>Tech without Testing</td>
                     <td>Feature</td>
                     <td>Tech</td>
-                    <td>Tech without testing</td>
+                    <td>Tech without Testing</td>
                     <td>Feature</td>
                     <td>Tech</td>
-                    <td>Tech without testing</td>
+                    <td>Tech without Testing</td>
                   </tr>
                   <tr>
                     <td
@@ -135,14 +108,33 @@
               stripe
               class="w100"
               max-height="500"
-              v-loading="boardSprintSummaryTableLoading"
+              v-loading="tableLoading"
             >
-              <el-table-column prop="issue_key" label="Tickets"></el-table-column>
-              <el-table-column prop="status" label="Status"></el-table-column>
-              <el-table-column prop="ticket_type" label="Ticket Type"></el-table-column>
+              <el-table-column prop="issue_key" label="Tickets" width="150px"></el-table-column>
+              <el-table-column prop="status" label="Status" width="100px">
+                <template slot-scope="scope">
+                  <el-tag
+                    class="status-tag"
+                    type="success"
+                    v-if="scope.row.status==='Done'"
+                  >{{scope.row.status}}</el-tag>
+                  <el-tag
+                    class="status-tag"
+                    type="warning"
+                    v-else-if="scope.row.status==='In Progress'"
+                  >{{scope.row.status}}</el-tag>
+                  <el-tag
+                    class="status-tag"
+                    type="danger"
+                    v-else-if="scope.row.status==='Open'"
+                  >{{scope.row.status}}</el-tag>
+                  <el-tag class="status-tag" v-else>{{scope.row.status}}</el-tag>
+                </template>
+              </el-table-column>
+              <!-- <el-table-column prop="ticket_type" label="Ticket Type"></el-table-column> -->
               <el-table-column prop="summary" label="Summary"></el-table-column>
-              <el-table-column prop="assignee" label="Assignee"></el-table-column>
-              <el-table-column prop="time_to_test" label="Time To Test"></el-table-column>
+              <el-table-column prop="assignee" label="Assignee" width="150px"></el-table-column>
+              <el-table-column prop="time_to_test" label="Time To Test" width="150px"></el-table-column>
             </el-table>
           </el-card>
         </el-col>
@@ -164,14 +156,33 @@
               stripe
               class="w100"
               max-height="500"
-              v-loading="boardSprintSummaryTableLoading"
+              v-loading="tableLoading"
             >
-              <el-table-column prop="issue_key" label="Tickets"></el-table-column>
-              <el-table-column prop="status" label="Status"></el-table-column>
-              <el-table-column prop="ticket_type" label="Ticket Type"></el-table-column>
+              <el-table-column prop="issue_key" label="Tickets" width="150px"></el-table-column>
+              <el-table-column prop="status" label="Status" width="100px">
+                <template slot-scope="scope">
+                  <el-tag
+                    class="status-tag"
+                    type="success"
+                    v-if="scope.row.status==='Done'"
+                  >{{scope.row.status}}</el-tag>
+                  <el-tag
+                    class="status-tag"
+                    type="warning"
+                    v-else-if="scope.row.status==='In Progress'"
+                  >{{scope.row.status}}</el-tag>
+                  <el-tag
+                    class="status-tag"
+                    type="danger"
+                    v-else-if="scope.row.status==='Open'"
+                  >{{scope.row.status}}</el-tag>
+                  <el-tag class="status-tag" v-else>{{scope.row.status}}</el-tag>
+                </template>
+              </el-table-column>
+              <!-- <el-table-column prop="ticket_type" label="Ticket Type"></el-table-column> -->
               <el-table-column prop="summary" label="Summary"></el-table-column>
-              <el-table-column prop="assignee" label="Assignee"></el-table-column>
-              <el-table-column prop="time_to_test" label="Time To Test"></el-table-column>
+              <el-table-column prop="assignee" label="Assignee" width="150px"></el-table-column>
+              <el-table-column prop="time_to_test" label="Time To Test" width="150px"></el-table-column>
             </el-table>
           </el-card>
         </el-col>
@@ -181,26 +192,45 @@
           <el-card class="box-card">
             <div slot="header" class="clearfix">
               <span>
-                <i class="fa fa-list"></i> Tech Without Testing Stories
+                <i class="fa fa-list"></i> Tech without Testing Stories
                 <span
                   class="small-number"
-                  v-if="stories['Tech without testing'].length>0"
-                >- {{stories['Tech without testing'].length}}</span>
+                  v-if="stories['Tech without Testing'].length>0"
+                >- {{stories['Tech without Testing'].length}}</span>
               </span>
             </div>
             <el-table
-              :data="stories['Tech without testing']"
+              :data="stories['Tech without Testing']"
               stripe
               class="w100"
               max-height="500"
-              v-loading="boardSprintSummaryTableLoading"
+              v-loading="tableLoading"
             >
-              <el-table-column prop="issue_key" label="Tickets"></el-table-column>
-              <el-table-column prop="status" label="Status"></el-table-column>
-              <el-table-column prop="ticket_type" label="Ticket Type"></el-table-column>
+              <el-table-column prop="issue_key" label="Tickets" width="150px"></el-table-column>
+              <el-table-column prop="status" label="Status" width="100px">
+                <template slot-scope="scope">
+                  <el-tag
+                    class="status-tag"
+                    type="success"
+                    v-if="scope.row.status==='Done'"
+                  >{{scope.row.status}}</el-tag>
+                  <el-tag
+                    class="status-tag"
+                    type="warning"
+                    v-else-if="scope.row.status==='In Progress'"
+                  >{{scope.row.status}}</el-tag>
+                  <el-tag
+                    class="status-tag"
+                    type="danger"
+                    v-else-if="scope.row.status==='Open'"
+                  >{{scope.row.status}}</el-tag>
+                  <el-tag class="status-tag" v-else>{{scope.row.status}}</el-tag>
+                </template>
+              </el-table-column>
+              <!-- <el-table-column prop="ticket_type" label="Ticket Type"></el-table-column> -->
               <el-table-column prop="summary" label="Summary"></el-table-column>
-              <el-table-column prop="assignee" label="Assignee"></el-table-column>
-              <el-table-column prop="time_to_test" label="Time To Test"></el-table-column>
+              <el-table-column prop="assignee" label="Assignee" width="150px"></el-table-column>
+              <el-table-column prop="time_to_test" label="Time To Test" width="150px"></el-table-column>
             </el-table>
           </el-card>
         </el-col>
@@ -213,92 +243,39 @@
 import Jira from '@/libs/jira'
 
 export default {
-  name: 'create_story',
+  name: 'sprint_summary',
   data() {
     return {
-      boards: {},
-      selectdBoard: null,
-      boardLoading: false,
       sprints: [],
       selectdSprint: null,
       sprintLoading: false,
       tableLoading: false,
-      boardSprintSummaryTableLoading: false,
-      bugSummary: [],
       sprintReport: {},
       stories: {
         Feature: [],
         Tech: [],
-        'Tech without testing': []
+        'Tech without Testing': []
       }
     }
   },
   methods: {
-    changeBoardHandler(val) {
-      this.sprints = []
-      this.bugSummary = []
-      this.sprintReport = {}
-      this.stories = {
-        Feature: [],
-        Tech: [],
-        'Tech without testing': []
-      }
-      this.fetchSprints(val)
-    },
-    async fetchSprints(boardId) {
-      try {
-        this.sprintLoading = true
-        this.selectdSprint = null
-        this.sprints = {}
-        let sprintsRes = await Jira.http.get(
-          `jira_api/${Jira.apis.sprints(boardId)}`
-        )
-        this.sprints = sprintsRes.data.results
-      } catch (err) {
-        this.$message.error(err.message)
-      } finally {
-        this.sprintLoading = false
-      }
-    },
     changeSprintHandler(val) {
-      this.bugSummary = []
       this.sprintReport = {}
       this.stories = {
         Feature: [],
         Tech: [],
-        'Tech without testing': []
+        'Tech without Testing': []
       }
-      this.fetchSprintBugSummary(val)
-      this.fetchBoardSprintSummary(this.selectdBoard, val)
-    },
-    fetchSprintBugSummary(sprintId) {
-      this.bugSummary = []
-      this.tableLoading = true
-      Jira.http
-        .get(`jira_api/${Jira.apis.sprint_bug_summary(sprintId)}`)
-        .then(sprintBugSummaryRes => {
-          let bugSummaryData = Object.values(sprintBugSummaryRes.data.results)
-          for (let bugSummary of bugSummaryData) {
-            bugSummary.total =
-              parseFloat(bugSummary.dev) + parseFloat(bugSummary.prod)
-          }
-          this.bugSummary = bugSummaryData
-        })
-        .catch(err => {
-          this.$message.error(err.message)
-        })
-        .finally(() => {
-          this.tableLoading = false
-        })
+      this.fetchBoardSprintSummary('223', val)
     },
     fetchBoardSprintSummary(boardId, sprintId) {
       this.sprintReport = {}
       this.stories = {
         Feature: [],
         Tech: [],
-        'Tech without testing': []
+        'Tech without Testing': []
       }
-      this.boardSprintSummaryTableLoading = true
+      this.tableLoading = true
       Jira.http
         .get(`jira_api/${Jira.apis.board_sprint_summary(boardId, sprintId)}`)
         .then(boardSprintSummaryRes => {
@@ -332,19 +309,19 @@ export default {
           this.$message.error(err.message)
         })
         .finally(() => {
-          this.boardSprintSummaryTableLoading = false
+          this.tableLoading = false
         })
     }
   },
   async mounted() {
     try {
-      this.boardLoading = true
-      let boardsRes = await Jira.http.get(`jira_api/${Jira.apis.boards()}`)
-      this.boards = boardsRes.data.results
+      this.sprintLoading = true
+      let sprintsRes = await Jira.http.get(`jira_api/${Jira.apis.sprints(223)}`)
+      this.sprints = sprintsRes.data.results
     } catch (err) {
       this.$message.error(err.message)
     } finally {
-      this.boardLoading = false
+      this.sprintLoading = false
     }
   }
 }

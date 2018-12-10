@@ -21,46 +21,48 @@
           </template>
         </el-radio-group>
       </el-form-item>
-      <el-row :gutter="100">
-        <el-col :span="12">
-          <el-form-item label="Sprint" prop="sprint">
-            <el-select v-model="story.sprint" filterable class="w300" :loading="sprintsLoading">
-              <el-option v-for="(val, key) in sprints" :key="val" :label="key" :value="val"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="Fix Version" prop="fix_version">
-            <el-select
-              v-model="story.fix_version"
-              filterable
-              class="w300"
-              :disabled="JSON.stringify(fixVersions)==='{}'"
-            >
-              <el-option-group v-for="(items, group) in fixVersions" :key="group" :label="group">
-                <el-option v-for="item in items" :key="item" :label="item" :value="item"></el-option>
-              </el-option-group>
-            </el-select>
-          </el-form-item>
-        </el-col>
-      </el-row>
+      <div v-if="story.story_type!=='TECH_EPIC'">
+        <el-row :gutter="100">
+          <el-col :span="12">
+            <el-form-item label="Sprint" prop="sprint">
+              <el-select v-model="story.sprint" filterable class="w300" :loading="sprintsLoading">
+                <el-option v-for="(val, key) in sprints" :key="val" :label="key" :value="val"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="Fix Version" prop="fix_version">
+              <el-select
+                v-model="story.fix_version"
+                filterable
+                class="w300"
+                :disabled="JSON.stringify(fixVersions)==='{}'"
+              >
+                <el-option-group v-for="(items, group) in fixVersions" :key="group" :label="group">
+                  <el-option v-for="item in items" :key="item" :label="item" :value="item"></el-option>
+                </el-option-group>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
 
-      <el-form-item label="Time To Test" prop="time_to_test">
-        <el-date-picker
-          v-model="story.time_to_test"
-          type="datetime"
-          format="yyyy-MM-dd HH:mm"
-          value-format="yyyy-MM-ddTHH:mm:00.000ZZ"
-        ></el-date-picker>
-      </el-form-item>
-      <el-form-item label="Description" prop="description">
-        <el-input type="textarea" :rows="5" v-model="story.description"></el-input>
-      </el-form-item>
-      <el-form-item label="Team" prop="teams">
-        <el-checkbox-group v-model="story.teams">
-          <el-checkbox v-for="team in teams" :label="team" :key="team"></el-checkbox>
-        </el-checkbox-group>
-      </el-form-item>
+        <el-form-item label="Time To Test" prop="time_to_test">
+          <el-date-picker
+            v-model="story.time_to_test"
+            type="datetime"
+            format="yyyy-MM-dd HH:mm"
+            value-format="yyyy-MM-ddTHH:mm:00.000ZZ"
+          ></el-date-picker>
+        </el-form-item>
+        <el-form-item label="Description" prop="description">
+          <el-input type="textarea" :rows="5" v-model="story.description"></el-input>
+        </el-form-item>
+        <el-form-item label="Team" prop="teams">
+          <el-checkbox-group v-model="story.teams">
+            <el-checkbox v-for="team in teams" :label="team" :key="team"></el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
+      </div>
       <div class="header-title">
         <span>Virtural Team</span>
       </div>
@@ -204,10 +206,17 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.submiting = true
+          let payload = JSON.parse(JSON.stringify(this.story))
+          if (this.story.story_type === 'TECH_EPIC') {
+            delete payload['sprint']
+            delete payload['fix_version']
+            delete payload['time_to_test']
+            delete payload['description']
+            delete payload['teams']
+          }
           Jira.http
-            .post(`jira_api/${Jira.apis.create_issue()}`, this.story)
+            .post(`jira_api/${Jira.apis.create_issue()}`, payload)
             .then(createIssueRes => {
-              console.log(createIssueRes)
               this.$message.success('Create story success!')
               let issueInfo = createIssueRes.data.results
               let html = ''

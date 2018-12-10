@@ -77,6 +77,10 @@ export default {
             {
               text: 'Sprint Summary',
               route: 'sprint_summary'
+            },
+            {
+              text: 'Sprint Bug Summary',
+              route: 'sprint_bug_summary'
             }
           ]
         }

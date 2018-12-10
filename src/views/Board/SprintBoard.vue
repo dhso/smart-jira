@@ -28,7 +28,12 @@
       </el-select>
     </div>
     <el-form class="sprint-board-buttons">
-      <el-button type="primary" @click="statusUpdate">Status Update</el-button>
+      <!-- <el-button
+        type="primary"
+        @click="statusUpdate"
+        :disabled="statusUpdating"
+        :loading="statusUpdating"
+      >Status Update</el-button>-->
       <el-button type="primary">Export As Excel</el-button>
     </el-form>
     <div class="clear-both"></div>
@@ -137,7 +142,7 @@
 import Jira from '@/libs/jira'
 
 export default {
-  name: 'create_story',
+  name: 'sprint_board',
   data() {
     return {
       boards: {},
@@ -150,7 +155,8 @@ export default {
       totalCount: null,
       treeGridLoading: false,
       currentPage: 1,
-      currentSize: 20
+      currentSize: 20,
+      statusUpdating: false
     }
   },
   methods: {
@@ -242,9 +248,13 @@ export default {
       this.fetchSprintBoard(this.selectdBoard, this.selectdSprint)
     },
     statusUpdate() {
+      this.statusUpdating = true
       Jira.http
         .get(
-          `jira_api/${Jira.apis.story_status_update(223, this.selectdSprint)}`
+          `jira_api/${Jira.apis.story_status_update(
+            this.selectdBoard,
+            this.selectdSprint
+          )}`
         )
         .then(updateRes => {
           console.log(updateRes)
@@ -252,6 +262,9 @@ export default {
         })
         .catch(err => {
           this.$message.error(err.message)
+        })
+        .finally(() => {
+          this.statusUpdating = false
         })
     },
     onNodeExpand(event) {

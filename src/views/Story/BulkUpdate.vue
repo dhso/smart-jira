@@ -9,7 +9,7 @@
       :hide-required-asterisk="true"
     >
       <div class="header-title">
-        <span>Bulk</span>
+        <span>Bulk Update</span>
       </div>
       <el-form-item label="Tickets" prop="tickets">
         <el-input
@@ -82,7 +82,7 @@
 <script>
 import Jira from '@/libs/jira'
 export default {
-  name: 'create_story',
+  name: 'bulk_update',
   data() {
     return {
       ticketTypes: [],

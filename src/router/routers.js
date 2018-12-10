@@ -37,6 +37,16 @@ const indexRouter = {
         require(['@/views/Board/SprintSummary.vue'], resolve)
     },
     {
+      path: '/sprint_bug_summary',
+      name: 'sprint_bug_summary',
+      meta: {
+        title: 'Smart JIRA - Sprint Bug Summary',
+        name: 'Sprint Bug Summary'
+      },
+      component: resolve =>
+        require(['@/views/Board/SprintBugSummary.vue'], resolve)
+    },
+    {
       path: '/bulk_update',
       name: 'bulk_update',
       meta: {
